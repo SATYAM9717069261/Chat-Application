@@ -1,0 +1,422 @@
+<html>
+
+<head>
+    <title>Admin Control Panal</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+        body {
+            background-color: 6975A6;
+            color: whitesmoke;
+        }
+        
+        .header_panal {
+            border-bottom: black solid 3px;
+        }
+        
+        .sat:hover {
+            background-color: rebeccapurple;
+        }
+        
+        tr td {
+            text-align: center;
+        }
+        
+        tr th {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="container" onload="show_users()">
+
+    <div id='outer'>
+    </div>
+
+    <div class="col-md-6">
+        <button type="button" class="btn btn-primary" onclick="show_tables()">Edit Table</button>
+        <button type="button" class="btn btn-primary" onclick="show_graphic()">Information </button>
+        <button type="button" class="btn btn-primary" onclick="show_admin()">Add Admin </button>
+        <button type="button" class="btn btn-primary" onclick="logout()">Log Out </button>
+
+    </div>
+
+    <div id="result" class="col-md-12" style='background-color:crimson; color:black; text-align:center; display:none;'></div>
+
+    <div id='reg' style="display:none;">
+        <div class='col-md-12' style='text-align: center;'>
+            <lable style='font-size:27px;'>Registration Table</lable>
+            <table class="table" style="margin-top:10px;">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                    <th>Password</th>
+                </tr>
+                <tbody id='reg_data'>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id='info'>
+        <div class="row">
+            <div class="col-md-12 header_panal" style="text-align:center">
+                <h1 contenteditable="true">ADMIN Control Panel</h1>
+            </div>
+        </div>
+
+        <!-- Middle Portion -->
+        <nav class="row">
+            <!--files Here  -->
+            <div class="container" style="width:70%; overflow: auto; float:left; background-color:#1D65A6; border-right: 2px solid #A4A4BF; margin-right: 1px; ">
+                <button id='show_all_person' onclick="show_users()" style="display:none; color:black;"> <- Back</button>
+                <h3 style="text-align:center">
+                    <lable>Users</lable>
+                </h3>
+                <div id="Show_users_here">
+                </div>
+            </div>
+
+            <!--End Files Here-->
+
+            <!--table here 192E5B-->
+            <div class='container' style="width:29%; float:right; background-color:#1D65A6; border-left: 2px solid #A4A4BF; margin-left: 1px;text-align: center">
+                <div class=" input-group-addon btn-info" style="background-color:#5bc0de;"> Personal Information </div>
+                <table class="table" style="text-align:center;" id="personal_info">
+
+                </table>
+                <div class=" input-group-addon btn-info" style="background-color:#5bc0de;"> File Information </div>
+                <table class="table" style="text-align:center;" id="file_info">
+
+                </table>
+            </div>
+            <!--End Table Here-->
+        </nav>
+    </div>
+
+    <!--End Middle Portion-->
+
+
+    <!-- Admin Registration Portion -->
+
+    <div class="container" id='add_admin' style="display:none;">
+        <div id='admin_result'></div>
+        <div class="row">
+            <div class="col-md-12 header_panal" style="text-align:center">
+                <h1>ADD ADMINISTRATOR</h1>
+            </div>
+        </div>
+        <nav class="row">
+            <!--files Here  -->
+            <div class="container" style="width:100%; overflow: auto; float:left; background-color:#1D65A6; border-right: 2px solid #A4A4BF; margin-right: 1px; ">
+                <h3 style="text-align:center">
+                    <lable>Fill This Form</lable>
+                </h3>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Your Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" id='name' required class="form-control" id="inputEmail3" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Email ID</label>
+                        <div class="col-sm-10">
+                            <input type="email" id='email' required class="form-control" id="inputEmail3" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label for='inputPassword' class='col-sm-2 control-label'>Password</label>
+                        <div class='col-sm-10'>
+                            <input type='password' required class='form-control' id='inputPassword' placeholder='Password' onkeyup='chk_pas()'>
+
+                            <label id='uper_lbl'>
+                                      <input id='uper_case'disabled type='checkbox'>Upper Case
+                                </label>
+                            <label id='num_lbl'>
+                                      <input id='number'disabled type='checkbox'> Number
+                                </label>
+                        </div>
+                    </div>
+
+
+                    <div class='form-group'>
+                        <label for='conf_Password' class='col-sm-2 control-label'>Conform Password</label>
+                        <div class='col-sm-10'>
+                            <input type='password' required class='form-control' onkeyup='chk_pas_mat()' id='conf_Password' placeholder='Conform Password'>
+                            <label id='lbl_match'>
+                            <input id='match_pas'type='checkbox' disabled> Password Match
+                             </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" onclick="add_admin()" class="btn btn-default">Registerd</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- End Admin Registration Portion -->
+
+            <script>
+                function logout() {
+                    if (window.XMLHttpRequest) {
+                        xmlhttp_log_out = new XMLHttpRequest();
+                    } else {
+                        xmlhttp_log_out = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp_log_out.onreadystatechange = function() {
+                        if (xmlhttp_log_out.readyState == 4 && xmlhttp_log_out.status == 200) {
+                            document.getElementById("outer").innerHTML = xmlhttp_log_out.responseText;
+                        }
+                    }
+
+                    xmlhttp_log_out.open('GET', "log_out.php", true);
+                    xmlhttp_log_out.send();
+                    window.location.assign("index.php");
+                }
+
+
+                function show_admin() {
+                    document.getElementById('add_admin').style.display = 'block';
+                    document.getElementById('reg').style.display = 'none';
+                    document.getElementById('info').style.display = 'none';
+                    document.getElementById('result').style.display = 'none';
+
+                }
+
+                function show_tables() {
+                    document.getElementById('reg').style.display = 'block';
+                    document.getElementById('info').style.display = 'none';
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('add_admin').style.display = 'none';
+                }
+
+                function show_graphic() {
+                    document.getElementById('reg').style.display = 'none';
+                    document.getElementById('add_admin').style.display = 'none';
+                    document.getElementById('info').style.display = 'block';
+                    document.getElementById('result').style.display = 'none';
+                    document.getElementById('show_all_person').click();
+                }
+                // table portion
+
+                function update(dir, e, reg, c_row) {
+                    //var d = dir + " " + e.title + " " + e.innerText;
+                    var fie = e.title;
+                    var E_id = "E_id=" + dir + "& Text=" + e.innerText + "& Field=" + fie + " & Table=" + reg + " & C_ROW=" + c_row;
+                    if (window.XMLHttpRequest) {
+                        xmlhttp_up = new XMLHttpRequest();
+                    } else {
+                        xmlhttp_up = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp_up.onreadystatechange = function() {
+                        if (xmlhttp_up.readyState == 4 && xmlhttp_up.status == 200) {
+                            document.getElementById("result").innerHTML = xmlhttp_up.responseText;
+                            show_reg_table();
+                        }
+                    }
+                    xmlhttp_up.open('POST', "update_data.php", true);
+                    xmlhttp_up.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xmlhttp_up.send(E_id);
+                       
+                }
+
+
+                show_reg_table();
+
+
+                function show_reg_table() {
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("reg_data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open('GET', "show_admin_table.php", true);
+                    xmlhttp.send();
+
+                }
+
+                //End table postion
+
+
+                //start Graphic postion
+
+
+
+                function show_users() {
+                    if (window.XMLHttpRequest) {
+                        xmlhttp_user = new XMLHttpRequest();
+                    } else {
+                        xmlhttp_user = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp_user.onreadystatechange = function() {
+                        if (xmlhttp_user.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("Show_users_here").innerHTML = xmlhttp_user.responseText;
+                        }
+                    }
+                    xmlhttp_user.open('POST', "show_users_admin.php", true);
+                    xmlhttp_user.send();
+                    document.getElementById('show_all_person').style.display = 'none';
+                }
+
+
+                function show_user_info(e) {
+                    var Email = 'Email=' + e.title;
+
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("personal_info").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open('POST', "show_user_info.php", true);
+                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xmlhttp.send(Email);
+
+                }
+
+                function show_users_file(e) {
+                    //alert(e.id);
+                    var path = 'path=' + e.id;
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("Show_users_here").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open('POST', "show_users_file.php", true);
+                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xmlhttp.send(path);
+                    document.getElementById('show_all_person').style.display = 'block';
+
+                }
+
+
+                function file_info(email, name) {
+                    var name = 'email=' + email + '& name=' + name.title;
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("file_info").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open('POST', "user_file_info.php", true);
+                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xmlhttp.send(name);
+
+                }
+
+                //End Graphic Portion
+
+                //Add admin
+
+                function add_admin() {
+                    var name = document.getElementById('name').value;
+                    var Email = document.getElementById('email').value;
+                    var pas1 = document.getElementById('inputPassword').value;
+                    var pas2 = document.getElementById('conf_Password').value;
+                    if (((name.length) > 3) && (Email.search('@gmail.com') != -1) && (pas1.length > 5) && (pas2.length > 5) && (pas1 == pas2) && (chk_pas() == 2)) {
+                        var Admin_detail = "Name=" + name + " & Email=" + Email + " & pas=" + pas1;
+                        if (window.XMLHttpRequest) {
+                            xmlhttp_add_admin = new XMLHttpRequest();
+
+                        } else {
+                            xmlhttp_add_admin = new ActiveXObject('Microsoft.XMLHTTP');
+
+                        }
+                        xmlhttp_add_admin.onreadystatechange = function() {
+                            if (xmlhttp_add_admin.readyState == 4 && xmlhttp_add_admin.status == 200) {
+                                document.getElementById("admin_result").innerHTML = xmlhttp_add_admin.responseText;
+
+                            }
+                        }
+                        xmlhttp_add_admin.open('POST', "add_admin.php", true);
+                        xmlhttp_add_admin.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xmlhttp_add_admin.send(Admin_detail);
+                        document.getElementById('name').value = '';
+                        document.getElementById('email').value = '';
+                        document.getElementById('inputPassword').value = '';
+                        document.getElementById('conf_Password').value = '';
+                    } else {
+                        alert('Fill This Form Correctly');
+                    }
+                }
+
+
+                function chk_pas() {
+                    var pos = 0;
+                    var str = document.getElementById('inputPassword').value;
+                    for (var i = 1; i <= 9; i++) {
+                        pos = str.search(i);
+                        if (pos >= 0) break;
+                        else pos = -1;
+                    }
+                    if (pos >= 0) {
+                        document.getElementById('number').checked = true;
+                        document.getElementById('num_lbl').style.backgroundColor = 'cornflowerblue ';
+                        var Num_var = 1;
+                    } else {
+                        document.getElementById('number').checked = false;
+                        document.getElementById('num_lbl').style.backgroundColor = 'indianred ';
+                    }
+                    //check upper case char
+                    var chk_Uper_var = 0;
+                    var charac = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+                    for (var ch = 0; ch < charac.length; ch++) {
+                        if (str.search(charac[ch]) >= 0) {
+                            chk_Uper_var = 1;
+                            break;
+                        } else
+                            chk_Uper_var = -1;
+                    }
+                    if (chk_Uper_var == 1) {
+                        document.getElementById('uper_case').checked = true;
+                        document.getElementById('uper_lbl').style.backgroundColor = 'cornflowerblue ';
+                        var Uper_var = 1;
+                    } else {
+                        document.getElementById('uper_case').checked = false;
+                        document.getElementById('uper_lbl').style.backgroundColor = 'indianred ';
+                    }
+
+                    return Uper_var + Num_var;
+                }
+
+                function chk_pas_mat() {
+                    if ((document.getElementById('inputPassword').value == document.getElementById('conf_Password').value) && (document.getElementById('conf_Password').value != '')) {
+                        document.getElementById('match_pas').checked = true;
+                        document.getElementById('lbl_match').style.backgroundColor = 'cornflowerblue ';
+                    } else {
+                        document.getElementById('match_pas').checked = false;
+                        document.getElementById('lbl_match').style.backgroundColor = 'indianred ';
+                    }
+                }
+                //End add admin
+            </script>
+
+</body>
+
+</html>
